@@ -136,9 +136,9 @@ sudo mkdir -p /etc/blackbox_exporter
 ```
 
 ```bash
-sudo tee /etc/systemd/system/alertmanager.service > /dev/null <<EOF
+sudo tee /etc/systemd/system/blackbox_exporter.service > /dev/null <<EOF
 [Unit]
-Description=Alertmanager
+Description=Blackbox Exporter
 Wants=network-online.target
 After=network-online.target
 
@@ -146,7 +146,8 @@ After=network-online.target
 User=prometheus
 Group=prometheus
 Type=simple
-ExecStart=/usr/local/bin/alertmanager --config.file=/etc/alertmanager/alertmanager.yml
+ExecStart=/usr/local/bin/blackbox_exporter \
+  --config.file=/etc/blackbox_exporter/config.yml
 
 [Install]
 WantedBy=multi-user.target
