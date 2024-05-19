@@ -430,6 +430,7 @@ It will triger Alermanger and an e-mail will be sent:
 ### Accessing the Monitoring Dashboard and Viewing Alerts
 
 1. **Grafana Dashboard**: Access Grafana at `http://localhost:3000` and view the dashboards for the NASA API and server metrics.
+user:admin pass: admin
 2. **Alertmanager**: Access Alertmanager at `http://localhost:9093` to view and manage alerts.
 
 ### Additional Instructions
