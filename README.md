@@ -188,7 +188,7 @@ sudo mkdir -p /etc/alertmanager
 ```
 
 ```bash
-sudo tee /etc/alertmanager/alertmanager.yml > /dev/null <<EOF
+sudo tee /etc/systemd/system/alertmanager.service > /dev/null <<EOF
 [Unit]
 Description=Alertmanager
 Wants=network-online.target
@@ -203,6 +203,38 @@ ExecStart=/usr/local/bin/alertmanager --config.file=/etc/alertmanager/alertmanag
 [Install]
 WantedBy=multi-user.target
 EOF
+```
+
+
+```bash
+sudo tee /etc/alertmanager/alertmanager.yml > /dev/null <<EOF
+route:
+  group_by: ['alertname']
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 1h
+  receiver: 'email-notifications'
+
+
+
+receivers:
+  - name: 'email-notifications'
+    email_configs:
+    - to: 'imkobi5@gmail.com'  # Replace with your recipient email address
+      from: 'imkobi5@gmail.com'  # Replace with your SendGrid verified sender email address
+      smarthost: smtp.sendgrid.net:587
+      auth_username: 'apikey'  # Replace with your SendGrid API key
+      auth_password: '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'  # Replace with your SendGrid API key
+      require_tls: true
+
+
+
+inhibit_rules:
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'warning'
+    equal: ['alertname', 'dev', 'instance']
 ```
 
 ```bash
