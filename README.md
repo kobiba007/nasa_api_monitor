@@ -156,7 +156,7 @@ EOF
 
 ```bash
 
-sudo tee /etc/blackbox_exporter/blackbox.yml > /dev/null <<EOF
+sudo tee /etc/blackbox_exporter/config.yml > /dev/null <<EOF
 modules:
   nasa_api:
     prober: http
