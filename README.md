@@ -235,6 +235,7 @@ inhibit_rules:
     target_match:
       severity: 'warning'
     equal: ['alertname', 'dev', 'instance']
+EOF
 ```
 
 ```bash
