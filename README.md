@@ -2,6 +2,10 @@
 
 This document outlines the steps to set up a monitoring and alerting system for a web service using Prometheus, Grafana, and Alertmanager. The web service chosen for this example is the NASA API.
 
+
+![App Screenshot](https://i.postimg.cc/9Fp56GKL/drawio-3.png
+)
+
 ## Tasks
 
 ### 1. Choose a Web Service
