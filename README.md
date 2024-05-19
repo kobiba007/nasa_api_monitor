@@ -169,6 +169,7 @@ modules:
         insecure_skip_verify: false
       headers:
         Accept: application/json
+EOF
 ```
 ```bash
 
