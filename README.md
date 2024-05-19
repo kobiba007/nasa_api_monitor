@@ -5,7 +5,7 @@ This document outlines the steps to set up a monitoring and alerting system for 
 ## Tasks
 
 ### 1. Choose a Web Service
-For this example, we are monitoring the NASA API available at [https://api.nasa.gov/](https://api.nasa.gov/).
+For this task, we are monitoring the NASA API available at [https://api.nasa.gov/](https://api.nasa.gov/).
 
 ### 2. Set Up Monitoring Tools
 
@@ -250,6 +250,7 @@ scrape_configs:
 3. **Configure Grafana:**
     - Add Prometheus as a data source in Grafana.
     - Create dashboards to visualize the metrics from Prometheus.
+    - Import the dashboard added in this repo (Nasa_API-1716119447004.json).
 
 4. **Configure Alertmanager:**
     - Edit the `alertmanager.yml` configuration file to include email notifications:
@@ -283,6 +284,7 @@ inhibit_rules:
       severity: 'warning'
     equal: ['alertname', 'dev', 'instance']    
 ```
+#### restart Alertmanager service
 
 5. **Define Alerting Rules:**
     - Create an `alert-rules.yml` file with the following content:
@@ -329,9 +331,10 @@ groups:
           summary: "High memory usage detected"
           description: "The memory usage on {{ $labels.instance }} is above 90%."
 ```
+#### restart prometheus service
 
 ### 3. Simulate Incidents
-To triger Alertmanager, add the following line to /etc/hosts:
+To triger Alertmanager, we wil change the DNS record for api.nasa.gov, add the following line to /etc/hosts:
 ```bash
 109.94.209.70     api.nasa.gov
 ```
@@ -369,6 +372,6 @@ It will triger Alermanger and an e-mail will be sent:
 
 ### Additional Instructions
 
-- Replace `YOUR_API_KEY` in the Prometheus configuration with your actual NASA API key.
+- Replace `YOUR_API_KEY` in the Prometheus configuration with your  NASA API key.
 - Ensure that email notifications are configured with your email credentials in Alertmanager.
 - Adjust the monitoring and alerting rules as needed for your specific use case.
