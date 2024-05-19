@@ -253,19 +253,32 @@ sudo systemctl status alertmanager
 
 ```yaml
 global:
+  scrape_interval: 15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  # scrape_timeout is set to the global default (10s).
 
+# Alertmanager configuration
 alerting:
   alertmanagers:
     - static_configs:
         - targets:
            - 127.0.0.1:9093
 
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+#rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
 rule_files:
   - "alert-rules.yml"
 
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
 scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
   - job_name: "prometheus"
 
+    # metrics_path defaults to '/metrics'
+    # scheme defaults to 'http'.
 
     static_configs:
       - targets: ["localhost:9090"]
@@ -274,6 +287,7 @@ scrape_configs:
   - job_name: 'blackbox_Nasa_API'
     metrics_path: /probe
     params:
+      module: [nasa_api]  # Use the module defined in blackbox.yml
     static_configs:
       - targets:
           - https://api.nasa.gov/planetary/apod?api_key=LqkYnxsKYJgcF0Hy1Defx1lULvoTe7Mcrsx1K7DX
@@ -284,6 +298,7 @@ scrape_configs:
       - source_labels: [__param_target]
         target_label: instance
       - target_label: __address__
+        replacement: 127.0.0.1:9115  # Adjust if Blackbox Exporter is running on a different host
       - source_labels: [instance]
         target_label: instance_short
         replacement: "api.nasa.gov"
