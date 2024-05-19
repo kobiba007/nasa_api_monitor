@@ -254,83 +254,89 @@ scrape_configs:
 4. **Configure Alertmanager:**
     - Edit the `alertmanager.yml` configuration file to include email notifications:
 
-    ```yaml
-    route:
-      group_by: ['alertname']
-      group_wait: 30s
-      group_interval: 5m
-      repeat_interval: 1h
-      receiver: 'email-notifications'
+```yaml
+route:
+  group_by: ['alertname']
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 1h
+  receiver: 'email-notifications'
 
-    receivers:
-      - name: 'email-notifications'
-        email_configs:
-          - to: 'your-email@example.com'
-            from: 'your-email@example.com'
-            smarthost: 'localhost:25'
-            require_tls: false
 
-    inhibit_rules:
-      - source_match:
-          severity: 'critical'
-        target_match:
-          severity: 'warning'
-        equal: ['alertname', 'dev', 'instance']
-    ```
+
+receivers:
+  - name: 'email-notifications'
+    email_configs:
+    - to: 'imkobi5@gmail.com'  # Replace with your recipient email address
+      from: 'imkobi5@gmail.com'  # Replace with your SendGrid verified sender email address
+      smarthost: smtp.sendgrid.net:587
+      auth_username: 'apikey'  # Replace with your SendGrid API key
+      auth_password: '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'  # Replace with your SendGrid API key
+      require_tls: true
+
+
+
+inhibit_rules:
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'warning'
+    equal: ['alertname', 'dev', 'instance']    
+```
 
 5. **Define Alerting Rules:**
     - Create an `alert-rules.yml` file with the following content:
 
-    ```yaml
-    groups:
-      - name: Nasa_api_alerts & node_alerts
-        rules:
-          - alert: HighResponseTime
-            expr: probe_duration_seconds > 0.5
-            for: 1m
-            labels:
-              severity: warning
-            annotations:
-              summary: "High response time detected"
-              description: "The response time for {{ $labels.instance }} is above 0.5 seconds."
+ ```yaml
+groups:
+  - name: Nasa_api_alerts & node_alerts
+    rules:
+      - alert: HighResponseTime
+        expr: probe_duration_seconds{instance="https://api.nasa.gov/planetary/apod?api_key=LqkYnxsKYJgcF0Hy1Defx1lULvoTe7Mcrsx1K7DX", instance_short="api.nasa.gov", job="blackbox_Nasa_API"} > 7
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High response time detected"
+          description: "The response time for {{ $labels.instance }} is above 0.5 seconds."
 
-          - alert: APIErrorRate
-            expr: probe_http_status_code != 200
-            for: 1m
-            labels:
-              severity: critical
-            annotations:
-              summary: "API error rate detected"
-              description: "The API at {{ $labels.instance }} is returning non-200 status codes."
+      - alert: APIErrorRate
+        expr: probe_http_status_code != 200
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "API error rate detected"
+          description: "The API at {{ $labels.instance }} is returning non-200 status codes."
 
-      - name: node_exporter_alerts
-        rules:
-          - alert: HighCpuUsage
-            expr: 100 - (avg by (instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
-            for: 5m
-            labels:
-              severity: warning
-            annotations:
-              summary: "High CPU usage detected"
-              description: "The CPU usage on {{ $labels.instance }} is above 80%."
+  - name: node_exporter_alerts
+    rules:
+      - alert: HighCpuUsage
+        expr: 100 - (avg by (instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU usage detected"
+          description: "The CPU usage on {{ $labels.instance }} is above 80%."
 
-          - alert: HighMemoryUsage
-            expr: node_memory_Active_bytes / node_memory_MemTotal_bytes > 0.9
-            for: 5m
-            labels:
-              severity: warning
-            annotations:
-              summary: "High memory usage detected"
-              description: "The memory usage on {{ $labels.instance }} is above 90%."
-    ```
+      - alert: HighMemoryUsage
+        expr: node_memory_Active_bytes / node_memory_MemTotal_bytes > 0.9
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory usage detected"
+          description: "The memory usage on {{ $labels.instance }} is above 90%."
+```
 
 ### 3. Simulate Incidents
-To triger Alertmanager, add the following line to /etc/hosts
-
-
-
-### Optional: Automation and Remediation (Bonus Task)
-Use Ansible to automate the deployment of the monitoring setup and the configuration of alerting rules. Implement automated remediation actions for certain types of incidents.
+To triger Alertmanager, add the following line to /etc/hosts:
+```bash
+109.94.209.70     api.nasa.gov
+```
+It will triger Alermanger and an e-mail will be sent:
+![App Screenshot](https://i.postimg.cc/VYRkWwdy/etoro.png)
 
 ## Documentation
 
