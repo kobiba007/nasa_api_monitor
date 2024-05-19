@@ -346,7 +346,7 @@ Use Ansible to automate the deployment of the monitoring setup and the configura
 - Error rate for the NASA API.
 - CPU and Memory usage of the server.
 
-![App Screenshot](https://i.postimg.cc/7C2jSrXk/grafana.png)
+![App Screenshot](https://i.postimg.cc/LsCRKH1n/grafana.png)
 
 
 ### Alerting Rules
