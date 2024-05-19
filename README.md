@@ -48,6 +48,10 @@ sudo useradd --no-create-home --shell /bin/false prometheus
 sudo chown -R prometheus:prometheus /etc/prometheus
 sudo chown prometheus:prometheus /usr/local/bin/prometheus
 sudo chown prometheus:prometheus /usr/local/bin/promtool
+sudo mkdir -p /var/lib/prometheus
+sudo chown -R prometheus:prometheus /var/lib/prometheus
+sudo chmod -R 775 /var/lib/prometheus
+
 ```
 
 ```bash
