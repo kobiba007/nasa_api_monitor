@@ -185,6 +185,9 @@ wget https://github.com/prometheus/alertmanager/releases/download/v0.27.0/alertm
 tar xvfz alertmanager-0.27.0.linux-amd64.tar.gz
 sudo mv alertmanager-0.27.0.linux-amd64/alertmanager /usr/local/bin/
 sudo mkdir -p /etc/alertmanager
+sudo mkdir -p /var/lib/alertmanager/data
+sudo chown -R prometheus:prometheus /var/lib/alertmanager
+
 ```
 
 ```bash
@@ -198,7 +201,7 @@ After=network-online.target
 User=prometheus
 Group=prometheus
 Type=simple
-ExecStart=/usr/local/bin/alertmanager --config.file=/etc/alertmanager/alertmanager.yml
+ExecStart=/usr/local/bin/alertmanager --config.file=/etc/alertmanager/alertmanager.yml --storage.path=/var/lib/alertmanager/data
 
 [Install]
 WantedBy=multi-user.target
