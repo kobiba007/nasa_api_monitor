@@ -400,7 +400,6 @@ To triger Alertmanager, we wil change the DNS record for api.nasa.gov, add the f
 109.94.209.70     api.nasa.gov
 ```
 It will triger Alermanger and an e-mail will be sent:
-![App Screenshot](https://i.postimg.cc/VYRkWwdy/etoro.png)
 
 ## Documentation
 
