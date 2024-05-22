@@ -223,11 +223,11 @@ route:
 receivers:
   - name: 'email-notifications'
     email_configs:
-    - to: 'imkobi5@gmail.com'  # Replace with your recipient email address
-      from: 'imkobi5@gmail.com'  # Replace with your SendGrid verified sender email address
+    - to: 'your@mail.com'  # Replace with your recipient email address
+      from: 'your@mail.com'  # Replace with your SendGrid verified sender email address
       smarthost: smtp.sendgrid.net:587
       auth_username: 'apikey'  # Replace with your SendGrid API key
-      auth_password: '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'  # Replace with your SendGrid API key
+      auth_password: '<YOUR_API>'  # Replace with your SendGrid API key
       require_tls: true
 
 
@@ -290,8 +290,7 @@ scrape_configs:
       module: [nasa_api]  # Use the module defined in blackbox.yml
     static_configs:
       - targets:
-          - https://api.nasa.gov/planetary/apod?api_key=LqkYnxsKYJgcF0Hy1Defx1lULvoTe7Mcrsx1K7DX
-
+          - https://api.nasa.gov/planetary/apod?api_key=<YOUR_API_KEY>
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
@@ -330,11 +329,11 @@ route:
 receivers:
   - name: 'email-notifications'
     email_configs:
-    - to: 'imkobi5@gmail.com'  # Replace with your recipient email address
-      from: 'imkobi5@gmail.com'  # Replace with your SendGrid verified sender email address
+    - to: ''  # Replace with your recipient email address
+      from: ''  # Replace with your SendGrid verified sender email address
       smarthost: smtp.sendgrid.net:587
       auth_username: 'apikey'  # Replace with your SendGrid API key
-      auth_password: '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'  # Replace with your SendGrid API key
+      auth_password: ''  # Replace with your SendGrid API key
       require_tls: true
 
 
@@ -356,7 +355,7 @@ groups:
   - name: Nasa_api_alerts & node_alerts
     rules:
       - alert: HighResponseTime
-        expr: probe_duration_seconds{instance="https://api.nasa.gov/planetary/apod?api_key=LqkYnxsKYJgcF0Hy1Defx1lULvoTe7Mcrsx1K7DX", instance_short="api.nasa.gov", job="blackbox_Nasa_API"} > 7
+        expr: probe_duration_seconds{instance="https://api.nasa.gov/planetary/apod?api_key=<YOUR_API_KEY>", instance_short="api.nasa.gov", job="blackbox_Nasa_API"} > 7
         for: 1m
         labels:
           severity: warning
