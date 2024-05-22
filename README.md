@@ -416,7 +416,6 @@ It will triger Alermanger and an e-mail will be sent:
 - Error rate for the NASA API.
 - CPU and Memory usage of the server.
 
-![App Screenshot](https://i.postimg.cc/LsCRKH1n/grafana.png)
 
 
 ### Alerting Rules
